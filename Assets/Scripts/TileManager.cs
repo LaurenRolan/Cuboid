@@ -16,7 +16,18 @@ public class TileManager : MonoBehaviour
     private int nPlatforms;
     public GameObject[] currentPlatforms;
     public GameObject[] nextPlatforms;
+    private static TileManager instance;
     // Start is called before the first frame update
+
+    public static TileManager Instance {
+        get {
+            if(instance == null)
+                instance = GameObject.FindObjectOfType<TileManager>();
+            return instance;
+            }
+        
+    }
+
     void Start()
     {
         state = 0;
@@ -28,7 +39,6 @@ public class TileManager : MonoBehaviour
         currentPlatforms = nextPlatforms;
         SpawnPlatform(topPlatforms[0], currentPlatforms[0].transform.GetChild(0).transform.GetChild(0).position, 0);
         currentPlatforms = nextPlatforms;
-        InvokeRepeating("newLine", 2.0f, 4.0f);
     }
 
     // Update is called once per frame

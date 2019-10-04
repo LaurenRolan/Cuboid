@@ -246,7 +246,7 @@ MonoBehaviour:
   - {fileID: 6081457653377600462, guid: 920431ea16743994f9e5c5cc313dd117, type: 3}
   - {fileID: 6312661989794843460, guid: 158b0b6a66714c6479177655e1746a82, type: 3}
   rightPlatforms:
-  - {fileID: 1144494199527791495, guid: 86832cf59b7ec7f4fac23a5b4f9d3e5b, type: 3}
+  - {fileID: 3651124783664549359, guid: 86832cf59b7ec7f4fac23a5b4f9d3e5b, type: 3}
   - {fileID: 2695426305628505281, guid: 9a71c5038cbedc149acffd6d0970b85e, type: 3}
   - {fileID: 638313766025561621, guid: c05d7d90b3c335643ba08ba1a356ddab, type: 3}
   leftPlatforms:
@@ -383,7 +383,7 @@ PrefabInstance:
     - target: {fileID: 7009845285607518512, guid: b3734c5b29a1d7240b7f17633f8b8a24,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7009845285607518516, guid: b3734c5b29a1d7240b7f17633f8b8a24,
         type: 3}
@@ -546,6 +546,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TopPlatform4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4883315743316334100, guid: 086310fa99b6d794586cbd49fe12f1b5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6146576986172087556, guid: 086310fa99b6d794586cbd49fe12f1b5,
         type: 3}

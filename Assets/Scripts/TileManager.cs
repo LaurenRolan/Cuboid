@@ -22,7 +22,7 @@ public class TileManager : MonoBehaviour
         state = 0;
         decay = false;
         keep = true;
-        nextPlatforms = currentPlatforms;
+        nextPlatforms = (GameObject[]) currentPlatforms.Clone();
         nPlatforms = 1;
         SpawnPlatform(topPlatforms[0], currentPlatforms[0].transform.GetChild(0).transform.GetChild(0).position, 0);
         currentPlatforms = nextPlatforms;
@@ -48,11 +48,11 @@ public class TileManager : MonoBehaviour
             Vector3 rightTopAttach = platform.transform.GetChild(0).transform.GetChild(2).position;
             Vector3 leftBottomAttach = platform.transform.GetChild(0).transform.GetChild(3).position;
             Vector3 rightBottomAttach = platform.transform.GetChild(0).transform.GetChild(4).position;
-            if(!decay && state % 2 == 0) {
+            if((!decay && state % 2 == 0) || state == 0) {
                 Debug.Log("State " + state + "     Loop " + i + "     TopPlatform " + state/2);
                 SpawnPlatform(topPlatforms[state/2], topAttach, i);
             }
-            else {
+            else if(state % 2 == 1) {
                 if(decay && i % 2 == 0) {
                     Debug.Log("State " + state + "     Loop " + i + "     Decay to " + (state-1)/2);
                     SpawnPlatform(rightPlatforms[(state-1)/2], rightTopAttach, i / 2);
@@ -65,7 +65,7 @@ public class TileManager : MonoBehaviour
                 }
             }
         }
-        currentPlatforms = nextPlatforms;
+        currentPlatforms = (GameObject[]) nextPlatforms.Clone();
     }
 
     public void SpawnPlatform(GameObject newPlatform, Vector3 attachPoint, int i) {

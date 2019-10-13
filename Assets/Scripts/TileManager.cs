@@ -104,12 +104,10 @@ public class TileManager : MonoBehaviour
 
     public void newLine() {
         StateMachine();
-        Debug.Log("State " + state + "   Decay " + decay + "     NPlatforms " + nPlatforms);
         int loopMax = nPlatforms;
         for(int i = 0; i < loopMax; i++) {
             if((!decay && state % 2 == 0) || state == 0) {
                 InvokePlatform(state/2, "top", i);
-                Debug.Log("Top of " + i);
             }
             else if(state % 2 == 1) {
                 if(decay && i % 2 == 0) {

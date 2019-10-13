@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour
+public class SplitAnimation : MonoBehaviour
 {
-    public float speed = (float) 0.01;
+    public bool input = true;
     public int instances;
-    public int step = 5;
     private const float targetScaleWidth = 1.5f;
     private const float targetScaleHeight = 0.5f;
     private const float initialScale = 1f;
@@ -14,33 +13,34 @@ public class PlayerScript : MonoBehaviour
     private float _currentScaleY = initialScale;
     private const int FramesCount = 100;
     private const float AnimationTimeSeconds = 2;
-    private float _deltaTime = AnimationTimeSeconds/FramesCount;
-    private float _dx = (targetScaleWidth - initialScale)/FramesCount;
-    private float _dy = (targetScaleHeight - initialScale)/FramesCount;
-    [SerializeField] GameObject[] up;
-    [SerializeField] GameObject[] center;
+    private float _deltaTime = AnimationTimeSeconds / FramesCount;
+    private float _dx = (targetScaleWidth - initialScale) / FramesCount;
+    private float _dy = (targetScaleHeight - initialScale) / FramesCount;
     [SerializeField] GameObject[] player;
-    bool input = true;
-
     // Start is called before the first frame update
     void Start()
     {
         instances = 1;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(input == true) {
-            if(Input.GetKey(KeyCode.UpArrow)) {
-               StartCoroutine("rotateForward");
-                input = false;
-            }
-            else if(Input.GetKey(KeyCode.S)) {
+            if(Input.GetKey(KeyCode.S)) {
                 StartCoroutine("splitAnimation");
                 input = false;
             }
         }
+    }
+
+    void duplicateCube() {
+        for(int i = 0; i < instances; i++) {
+            player[i * 2].transform.localScale = new Vector3(1/(instances+1), 1/(instances+1), 1/(instances+1));
+        }
+        for(int i = 1; i < instances * 2; i+=2) {
+            player[i] = Instantiate(player[i-1], new Vector3(1/(instances+1), 1/(instances+1), 1/(instances+1)), Quaternion.identity); //change vector
+        }
+        instances *= 2;
     }
     IEnumerator splitAnimation() {
         bool done = false;
@@ -62,23 +62,11 @@ public class PlayerScript : MonoBehaviour
                     Debug.Log("Got to y target scale");
                 }
                     
-                player[j].transform.localScale = new Vector3(1,0,0) * _currentScaleX;
-                player[j].transform.localScale = new Vector3(0,1,0) * _currentScaleY;
+                player[j].transform.localScale = new Vector3(_currentScaleX,_currentScaleY,_currentScaleY);
                 yield return new WaitForSeconds(_deltaTime);
             }
-            input = true;
         }
-    }
-    IEnumerator rotateForward(){
-        Debug.Log("Entered with instances " + instances);
-        for(int j = 0; j < instances; j++) {
-            Debug.Log("j = " + j);
-            for(int i = 0; i < 90 / step; i++) {
-                player[j].transform.RotateAround(up[j].transform.position, Vector3.right, step);
-                yield return new WaitForSeconds(speed);
-            }
-            center[j].transform.position = player[j].transform.position;
-        }
+        duplicateCube();
         input = true;
     }
 }

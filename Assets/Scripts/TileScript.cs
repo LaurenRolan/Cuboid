@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TileScript : MonoBehaviour
 {
+    private float fallDelay = 2;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,5 +21,16 @@ public class TileScript : MonoBehaviour
         if(other.tag == "Player"){
             TileManager.Instance.newLine();
         }
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if(other.tag == "Player"){
+            StartCoroutine(FallDown());
+        }
+    }
+
+    IEnumerator FallDown() {
+        yield return new WaitForSeconds(fallDelay);
+        GetComponent<Rigidbody>().isKinematic = false;
     }
 }

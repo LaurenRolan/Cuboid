@@ -42,32 +42,42 @@ public class PlayerScript : MonoBehaviour
             }
         }
     }
+    void duplicateCube() {
+        for(int i = 0; i < instances; i++) {
+            player[i * 2].transform.localScale = new Vector3(1.0f/(instances+1), 1.0f/(instances+1), 1.0f/(instances+1));
+            player[i * 2].transform.Translate(player[i*2].transform.position.x - 1.0f/((instances+1)*2), 
+                                              player[i*2].transform.position.y,
+                                              player[i*2].transform.position.z - 1.0f/((instances+1)*2));
+        }
+        //for(int i = 1; i < instances * 2; i+=2) {
+        //    player[i] = Instantiate(player[i-1], new Vector3(1/(instances+1), 1/(instances+1), 1/(instances+1)), Quaternion.identity); //change vector
+        //}
+        instances *= 2;
+    }
     IEnumerator splitAnimation() {
         bool done = false;
-        Debug.Log("dx " + _dx);
-        Debug.Log("dy " + _dy); 
         while(!done) {
-            Debug.Log("In while");
             for(int j = 0; j < instances; j++) {
                 _currentScaleX += _dx;
                 _currentScaleY += _dy;
                 if (_currentScaleX > targetScaleWidth) {
                     _currentScaleX = targetScaleWidth;
                     done = true;
-                    Debug.Log("Got to x target scale");
                 }
                 if (_currentScaleY < targetScaleHeight) {
                     _currentScaleY = targetScaleHeight;
                     done = done && true;
-                    Debug.Log("Got to y target scale");
                 }
                     
-                player[j].transform.localScale = new Vector3(1,0,0) * _currentScaleX;
-                player[j].transform.localScale = new Vector3(0,1,0) * _currentScaleY;
+                player[j].transform.localScale = new Vector3(_currentScaleX, _currentScaleY, _currentScaleY);
+                Vector3 player_pos = player[j].transform.position;
+                //if(!done)
+                //    player[j].transform.Translate( new Vector3(0, _dy, 0) );
                 yield return new WaitForSeconds(_deltaTime);
             }
-            input = true;
         }
+        duplicateCube();
+        input = true;
     }
     IEnumerator rotateForward(){
         Debug.Log("Entered with instances " + instances);

@@ -35,38 +35,39 @@ public class SplitAnimation : MonoBehaviour
 
     void duplicateCube() {
         for(int i = 0; i < instances; i++) {
-            player[i * 2].transform.localScale = new Vector3(1/(instances+1), 1/(instances+1), 1/(instances+1));
+            player[i * 2].transform.localScale = new Vector3(1.0f/(instances+1), 1.0f/(instances+1), 1.0f/(instances+1));
+            player[i * 2].transform.Translate(- 1.0f/(instances*2), 
+                                              0,
+                                              0);
         }
         for(int i = 1; i < instances * 2; i+=2) {
-            player[i] = Instantiate(player[i-1], new Vector3(1/(instances+1), 1/(instances+1), 1/(instances+1)), Quaternion.identity); //change vector
+            player[i] = Instantiate(player[i-1], new Vector3(1.0f/(instances*2), -1.0f/(instances*2+2), player[i-1].transform.position.z), Quaternion.identity); //change vector
         }
         instances *= 2;
     }
     IEnumerator splitAnimation() {
         bool done = false;
-        Debug.Log("dx " + _dx);
-        Debug.Log("dy " + _dy); 
         while(!done) {
-            Debug.Log("In while");
             for(int j = 0; j < instances; j++) {
                 _currentScaleX += _dx;
                 _currentScaleY += _dy;
                 if (_currentScaleX > targetScaleWidth) {
                     _currentScaleX = targetScaleWidth;
                     done = true;
-                    Debug.Log("Got to x target scale");
                 }
                 if (_currentScaleY < targetScaleHeight) {
                     _currentScaleY = targetScaleHeight;
                     done = done && true;
-                    Debug.Log("Got to y target scale");
                 }
                     
                 player[j].transform.localScale = new Vector3(_currentScaleX,_currentScaleY,_currentScaleY);
+                if(!done)
+                    player[j].transform.Translate( new Vector3(0, _dy/2, 0) );
+                //player[j].transform.Translate(player[j].transform.position.x, player[j].transform.position.y, player[j].transform.position.z + _dy/2);
                 yield return new WaitForSeconds(_deltaTime);
             }
         }
-        duplicateCube();
         input = true;
+        duplicateCube();
     }
 }
